@@ -38,14 +38,22 @@
         [self.view addSubview:self.tabbarController.view];
         [self.tabbarController didMoveToParentViewController:self];
     }
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateData) name:@"DataUpdateNotification" object:nil];
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
+
+- (void)updateData
+{
+    [self.tabbarController setSelectedIndex:0];
+}
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)setupViewControllers {
@@ -79,11 +87,11 @@
     UIImage *unfinishedImage = [UIImage imageNamed:@"tabbar_normal_background"];
     NSArray *tabBarItemImages = @[@"first", @"second", @"third"];
     NSArray *titleArray = @[@"题目",@"答案",@"目录"];
-    NSArray *badgeArray = @[@"1",@"2",@"3"];
+    //NSArray *badgeArray = @[@"0",@"0",@"0"];
     NSInteger index = 0;
     for (RDVTabBarItem *item in [[tabBarController tabBar] items]) {
         [item setTitle:[titleArray objectAtIndex:index]];
-        [item setBadgeValue:[badgeArray objectAtIndex:index]];
+        //[item setBadgeValue:[badgeArray objectAtIndex:index]];
         
         [item setBackgroundSelectedImage:finishedImage withUnselectedImage:unfinishedImage];
         UIImage *selectedimage = [UIImage imageNamed:[NSString stringWithFormat:@"%@_selected",

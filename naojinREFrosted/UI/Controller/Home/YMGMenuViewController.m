@@ -15,6 +15,8 @@
 #import "UMFeedback.h"
 #import "TalkingData.h"
 #import "MobClick.h"
+#import "UMHandleViewController.h"
+#import "UMHandleViewController_New.h"
 
 @interface YMGMenuViewController ()
 
@@ -47,7 +49,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - table view datasource
@@ -136,9 +137,6 @@
     }else if (indexPath.section == 1 && indexPath.row == 0) {
         [self presentModalViewController:[UMFeedback feedbackModalViewController]
                                 animated:YES];
-//        UIViewController *feedbackViewController = [UMFeedback feedbackViewController];
-//        REFrostedNavigationController *navigationController = [[REFrostedNavigationController alloc] initWithRootViewController:feedbackViewController];
-//        self.frostedViewController.contentViewController = navigationController;
         [TalkingData trackEvent:@"反馈点击"];
         [MobClick event:@"naojinREF04"];
     }else if (indexPath.section == 1 && indexPath.row == 1) {
@@ -147,10 +145,24 @@
         [TalkingData trackEvent:@"软件推荐点击"];
         [MobClick event:@"naojinREF05"];
     }else if (indexPath.section == 1 && indexPath.row == 2) {
-        
+        [self showHandleView_New];
     }
     [self.frostedViewController hideMenuViewController];
 }
 
+- (void)showHandleView
+{
+    UMHandleViewController *controller = [[UMHandleViewController alloc] init];
+    REFrostedNavigationController *navigationController = [[REFrostedNavigationController alloc] initWithRootViewController:controller];
+    self.frostedViewController.contentViewController = navigationController;
+}
+
+- (void)showHandleView_New
+{
+    UMHandleViewController_New *controller = [[UMHandleViewController_New alloc] init];
+    REFrostedNavigationController *navigationController = [[REFrostedNavigationController alloc] initWithRootViewController:controller];
+    self.frostedViewController.contentViewController = navigationController;
+    [self.frostedViewController hideMenuViewController];
+}
 
 @end

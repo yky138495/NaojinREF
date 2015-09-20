@@ -14,40 +14,31 @@
 @interface AnswerViewController ()<UITextViewDelegate>
 
 @property (nonatomic,strong) UITextView *textView;
-
 @property (nonatomic,strong) NSMutableArray *array;
-
 @property (nonatomic,assign) NSUInteger flag;
-
 @property (nonatomic,strong) UIView *mask_view;
-
 @property (nonatomic,strong) UILabel *countDownLable;
-
 @property (nonatomic,strong) NSTimer *timer;
+
 @end
 
 @implementation AnswerViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = @"答案";
     self.flag = 5;
     NSArray * sqlarray = [[localSqlService sharedInstance]getAllData];
     self.array = [[NSMutableArray alloc]initWithArray:sqlarray];
-    
     self.textView = [self creataTextView];
     self.textView.delegate = self;
-   
-    
     [self.view addSubview:self.textView];
-    
-    // Do any additional setup after loading the view.
 }
 
 - (void) layoutSubviews
 {
     self.countDownLable.text = [NSString stringWithFormat:@"%ld",(long)self.flag];
-
 }
 
 - (void)showCountDownTime
@@ -62,8 +53,6 @@
         self.flag = 5;
         [self.view addSubview:[self createMaskView]];
     }
-    //[self.timer fire];
-   
 }
 
 - (UIView *)createMaskView
@@ -71,13 +60,11 @@
     self.mask_view = [UIView new];
     self.mask_view.backgroundColor = [UIColor grayColor];
     self.mask_view.frame = self.view.frame;
-    
     UILabel *infoLable = [UILabel new];
     infoLable.frame = CGRectMake(20, 50, 250, 90);
     infoLable.font = [UIFont systemFontOfSize:20];
     infoLable.text = @"答案即将揭晓 ......";
     [self.mask_view addSubview:infoLable];
-    
     
     self.countDownLable = [[UILabel alloc]init];
     self.countDownLable.frame = self.view.frame;
@@ -92,13 +79,10 @@
 {
     self.flag--;
     self.countDownLable.text = [NSString stringWithFormat:@"%ld",(long)self.flag];
-    
     if (self.flag == 0) {
         [AnswerViewController animateOut:self.mask_view bView:self.mask_view];
-        
         [self.timer invalidate];
     }
-
 }
 
 + (void)animateOut:(UIView *)theView bView:(UIView*)bview
@@ -109,23 +93,18 @@
         //黑屏2s
         UIView *view = [[UIView alloc]initWithFrame:[UIScreen mainScreen].bounds];
         view.center = bview.center;
-        
         [bview addSubview:view];
-        
         [UIView animateWithDuration:0.31 animations:^{
             theView.transform = CGAffineTransformMakeScale(0, 0);
             view.transform = CGAffineTransformMakeScale(1, 0.0000001);
             [UIView animateWithDuration:10 animations:^{
             }];
-            //退出
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [theView removeFromSuperview];
-                
             });
         }];
     }];
 }
-
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -135,7 +114,6 @@
     NSUInteger index = [[userDefault objectForKey:@"index"] integerValue];
     NSDictionary *dictionary = [self.array objectAtIndex:index];
     self.textView.text = [dictionary objectForKey:@"A"];
-
 }
 
 - (UITextView *)creataTextView
@@ -158,19 +136,9 @@
     return NO;
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

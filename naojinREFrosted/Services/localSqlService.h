@@ -14,9 +14,7 @@
 @property (nonatomic,strong) FMDatabase *database;
 
 + (instancetype)sharedInstance;
-
 - (NSArray *)getAllData;
-
 - (NSInteger)getDataBaseCount;
 
 @end

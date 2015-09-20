@@ -37,12 +37,15 @@ NSString * const ApplicationMenuDirectionChangedNotification = @"ApplicationMenu
     [super viewDidLoad];
     self.title = @"更好风格";
     self.titleArray = @[@"左",@"右",@"上",@"下"];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"菜单"
+                                                                             style:UIBarButtonItemStylePlain
+                                                                            target:(REFrostedNavigationController *)self.navigationController
+                                                                            action:@selector(showMenu)];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - table view datasource
@@ -89,7 +92,6 @@ NSString * const ApplicationMenuDirectionChangedNotification = @"ApplicationMenu
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
- 
     [[NSUserDefaults standardUserDefaults] setInteger:indexPath.row forKey:@"menuDerection"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self.navigationController popViewControllerAnimated:YES];
@@ -100,8 +102,6 @@ NSString * const ApplicationMenuDirectionChangedNotification = @"ApplicationMenu
     REFrostedNavigationController *navigationController = [[REFrostedNavigationController alloc] initWithRootViewController:homeViewController];
     self.frostedViewController.contentViewController = navigationController;
     [self.frostedViewController hideMenuViewController];
-
-    
 }
 
 @end

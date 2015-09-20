@@ -14,49 +14,20 @@
 #define ARBUTTON_ITEM_FRAME CGRectMake(0.f, 0.f, 30.f, 30.f)
 
 @interface HomeViewController ()<UITextViewDelegate>
-//{
-//    GDTMobBannerView *_bannerView;
-//}
 
 @property (nonatomic,strong) NSMutableArray *array;
-
 @property (nonatomic,strong) UITextView *textView;
 
 @end
 
 @implementation HomeViewController
-//
-//-(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-//{
-//    self = [super initWithNibName:@"BannerView" bundle:nibBundleOrNil];
-//    if (self) {
-//        bannerView = [[GDTMobBannerView alloc]initWithFrame:CGRectMake(0, 0, GDTMOB_AD_SUGGEST_SIZE_320x50.width, GDTMOB_AD_SUGGEST_SIZE_320x50.height)
-//                                                     appkey:@"1104322742" placementId:@"8000608136215839"];
-//    }
-//    return self;
-//}
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    /*
-    _bannerView = [[GDTMobBannerView alloc]initWithFrame:CGRectMake(0, 200, GDTMOB_AD_SUGGEST_SIZE_320x50.width, GDTMOB_AD_SUGGEST_SIZE_320x50.height)
-                                                 appkey:@"100720253" placementId:@"9079537207574943610"];
-    _bannerView.layer.borderColor = [UIColor redColor].CGColor;
-    _bannerView.layer.borderWidth = 1.f;
-    _bannerView.delegate = self; // 设置Delegate
-    _bannerView.currentViewController = self; //设置当前的ViewController
-    _bannerView.interval = 30; //【可选】设置刷新频率;默认30秒
-    _bannerView.isGpsOn = NO; //【可选】开启GPS定位;默认关闭
-    _bannerView.showCloseBtn = YES; //【可选】展示关闭按钮;默认显示
-    _bannerView.isAnimationOn = YES; //【可选】开启banner轮播和展现时的动画效果;默认开启
-    [self.view addSubview:_bannerView]; //添加到当前的view中
-    [_bannerView loadAdAndShow]; //加载广告并展示
-*/
-    
     self.title = @"脑筋急转弯";
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     [userDefault setInteger:0 forKey:@"index"];
-    
     NSArray * sqlarray = [[localSqlService sharedInstance]getAllData];
     self.array = [[NSMutableArray alloc]initWithArray:sqlarray];
     
@@ -64,13 +35,6 @@
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"上一题" style:UIBarButtonItemStylePlain target:self action:@selector(leftButtonClicked:)];
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
-    self.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor blackColor]};
-//    
-//    self.navigationItem.leftBarButtonItem = [self leftBarButtonItem];
-//    
-//    self.navigationItem.rightBarButtonItem = [self rightBarButtonItem];
-    
-    
     self.textView = [self creataTextView];
     self.textView.delegate = self;
     [self.view addSubview:self.textView];
@@ -122,16 +86,12 @@
 
 - (void)leftButtonClicked:(id)sender
 {
-    
-   // [self showBannerView];
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    
     NSUInteger index = [[userDefault objectForKey:@"index"] integerValue] - 1;
     if (index == 0 - 1) {
         index = [self.array count] - 1;
     }
     [userDefault setInteger:index forKey:@"index"];
-    
     NSDictionary *dictionary = [self.array objectAtIndex:index];
     self.textView.text = [dictionary objectForKey:@"Q"];
 }
@@ -150,7 +110,6 @@
         index = 0;
     }
     [userDefault setInteger:index forKey:@"index"];
-    
     NSDictionary *dictionary = [self.array objectAtIndex:index];
     self.textView.text = [dictionary objectForKey:@"Q"];
 }
@@ -161,7 +120,6 @@
     NSUserDefaults *userDefault =[NSUserDefaults standardUserDefaults];
     [userDefault setInteger:randomData forKey:@"index"];
     [userDefault synchronize];
-    
     return randomData;
 }
 
@@ -173,24 +131,21 @@
     UITextView *textView = [[UITextView alloc]initWithFrame:CGRectMake(offest, 100, width, height)];
     textView.font = [UIFont systemFontOfSize:30];
     textView.textAlignment = NSTextAlignmentCenter;
-    
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     NSUInteger index = [[userDefault objectForKey:@"index"] integerValue];
-    
     NSDictionary *dictionary = [self.array objectAtIndex:index];
     textView.text = [dictionary objectForKey:@"Q"];
     return textView;
 }
-
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     return NO;
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)bannerViewMemoryWarning

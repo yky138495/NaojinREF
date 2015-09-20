@@ -38,6 +38,10 @@
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapBackground)];
     tapGesture.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:tapGesture];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"菜单"
+                                                                             style:UIBarButtonItemStylePlain
+                                                                            target:(REFrostedNavigationController *)self.navigationController
+                                                                            action:@selector(showMenu)];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -78,11 +82,9 @@
     NSString *rule1=@"^1(3|5|7|8|4)\\d{9}";
     NSPredicate *pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@",rule1];
     BOOL isMatch=[pred evaluateWithObject:_PhoneText.text];
-    if (!isMatch||_PhoneText.text.length!=11)
-    {
+    if (!isMatch || _PhoneText.text.length != 11){
         [TalkingData trackEvent:@"绑定手机：获取验证码手机号码不正确"];
         [MobClick event:@"绑定手机：获取验证码手机号码不正确"];
-
         //手机号码不正确
         UIAlertView* alert=[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"温馨提示", nil) message:NSLocalizedString(@"请输入正确的手机号码", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"确定", nil) otherButtonTitles:nil, nil];
         [alert show];
@@ -93,10 +95,8 @@
 
     [SMS_SDK getVerificationCodeBySMSWithPhone:_PhoneText.text
                                           zone:areaCode
-                                        result:^(SMS_SDKError *error)
-     {
-         if (error)
-         {
+                                        result:^(SMS_SDKError *error){
+         if (error){
              UIAlertView* alert=[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"温馨提示", nil)
                                                            message:[NSString stringWithFormat:@"状态码：%zi ,错误描述：%@",error.errorCode,error.errorDescription]
                                                           delegate:self
@@ -135,9 +135,7 @@
 {
     [TalkingData trackEvent:@"绑定手机：提交验证码"];
     [MobClick event:@"绑定手机：提交验证码"];
-
-    if(_CodeText.text.length!=4)
-    {
+    if(_CodeText.text.length!=4){
         UIAlertView* alert=[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"温馨提示", nil) message:NSLocalizedString(@"验证码不正确", nil) delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alert show];
     }else{

@@ -62,12 +62,13 @@
 }
 
 
-- (void)customizeTabBarForController:(RDVTabBarController *)tabBarController {
+- (void)customizeTabBarForController:(RDVTabBarController *)tabBarController
+{
     UIImage *finishedImage = [UIImage imageNamed:@"tabbar_selected_background"];
     UIImage *unfinishedImage = [UIImage imageNamed:@"tabbar_normal_background"];
     NSArray *tabBarItemImages = @[@"first", @"second", @"third",@"second"];
     NSArray *titleArray = @[@"题目",@"答案",@"目录",@"设置"];
-    NSArray *badgeArray = @[@"1",@"2",@"3",@"4"];
+    NSArray *badgeArray = @[@"0",@"0",@"0",@"0"];
     NSInteger index = 0;
     for (RDVTabBarItem *item in [[tabBarController tabBar] items]) {
         [item setTitle:[titleArray objectAtIndex:index]];
@@ -78,7 +79,6 @@
         UIImage *unselectedimage = [UIImage imageNamed:[NSString stringWithFormat:@"%@_normal",
                                                         [tabBarItemImages objectAtIndex:index]]];
         [item setFinishedSelectedImage:selectedimage withFinishedUnselectedImage:unselectedimage];
-        
         index++;
     }
 }

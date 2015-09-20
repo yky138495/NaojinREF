@@ -25,8 +25,6 @@
     self.title = @"目录";
     NSArray * sqlarray = [[localSqlService sharedInstance]getAllData];
     self.array = [[NSMutableArray alloc]initWithArray:sqlarray];
-
-    // Do any additional setup after loading the view.
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -41,9 +39,9 @@
     [TalkingData trackPageEnd:self.title];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - table view datasource
@@ -65,8 +63,6 @@
     NSDictionary *dictionary = [self.array objectAtIndex:indexPath.row];
     cell.textLabel.text =  [dictionary objectForKey:@"Q"];
     return cell;
-    
-  
 }
 
 #pragma mark - table view delegate
@@ -95,10 +91,13 @@
     NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[dictionary objectForKey:@"Q"], @"问题",nil];
     NSString *index = [NSString stringWithFormat:@"{%ld:%ld}",indexPath.section,indexPath.row];
     [TalkingData trackEvent:@"目录点击" label:index parameters:dic];
-
-//    AppDelegate *delegate = [[UIApplication  sharedApplication]delegate];
-//    [delegate.tabBarController setSelectedIndex:0];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"DataUpdateNotification"
+                                                        object:nil];
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
 
 @end
